@@ -1,0 +1,1 @@
+Funky vector template class that can take any type and do all normal math vector operations on it, as long as the type has that operator.
