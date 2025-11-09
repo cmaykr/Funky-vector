@@ -33,7 +33,7 @@ public:
 int main()
 {
     Vector<int, 4> vec{1, 2, 3, 4};
-    Vector<double, 4> vec2{2.0, 3.0, 4.0, 5.0};
+    Vector<double, 4> vec2{2.5, 3.0, 4.0, 5.0};
 
     auto result = vec + vec2;
 

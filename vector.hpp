@@ -27,8 +27,6 @@ public:
     template <typename Other_Type>
     auto operator+(Vector<Other_Type, N> const &rhs) -> Vector<Return_Type_Addition<Value_Type, Other_Type>, N>;
 
-    Value_Type scalar(size_t const& index) const;
-
     // template <typename Scalar>
     // auto operator*(Scalar const& scalar) requires(Multiplicable<Value_Type, Scalar>);
 

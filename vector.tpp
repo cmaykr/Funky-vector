@@ -3,8 +3,6 @@
 #include <concepts>
 
 
-
-
 template <typename Value_Type, unsigned int N>
 Vector<Value_Type, N>::Vector()
     : scalars{}
@@ -26,12 +24,6 @@ auto Vector<Value_Type, N>::operator+(Vector<Other_Type, N> const &rhs)
 }
 
 template <typename Value_Type, unsigned int N>
-Value_Type Vector<Value_Type, N>::scalar(size_t const &index) const
-{
-    return scalars[index];
-}
-
-template <typename Value_Type, unsigned int N>
 unsigned int Vector<Value_Type, N>::size() const
 {
     return N;
@@ -42,7 +34,7 @@ template <typename... ValueList>
 Vector<Value_Type, N>::Vector(ValueList... values)
     : scalars{values...}
 {
-    static_assert((std::is_same<Value_Type, ValueList>::value && ...) == true);
+    // static_assert((std::is_same<Value_Type, ValueList>::value && ...) == true);
 }
 
 template <typename Value_Type, unsigned int N>
@@ -53,7 +45,7 @@ auto Vector<Value_Type, N>::operator*(Scalar const& scalar)
     Vector<Return_Type_Multiplication<Value_Type, Scalar>, N> res{};
     for (size_t i{}; i < size(); ++i)
     {
-        res.scalar(i) = scalars[i] * scalar;
+        res[i] = operator[](i) * scalar;
     }
     return res;
 }
