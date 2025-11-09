@@ -2,6 +2,9 @@
 
 #include <concepts>
 
+
+
+
 template <typename Value_Type, unsigned int N>
 Vector<Value_Type, N>::Vector()
     : scalars{}
@@ -11,13 +14,13 @@ Vector<Value_Type, N>::Vector()
 template <typename Value_Type, unsigned int N>
 template <typename Other_Type>
 auto Vector<Value_Type, N>::operator+(Vector<Other_Type, N> const &rhs) 
-    -> Vector<decltype(std::declval<Value_Type>() + std::declval<Other_Type>()), N>
+    -> Vector<Return_Type_Addition<Value_Type, Other_Type>, N>
 {
-    Vector<Value_Type, N> vec {};
+    Vector<Return_Type_Addition<Value_Type, Other_Type>, N> vec {};
     
     for (size_t i{0}; i < size(); ++i)
     {
-        vec.scalars[i] = scalar(i) + rhs.scalar(i);
+        vec[i] = operator[](i) + rhs[i];
     }
     return vec;
 }
@@ -40,24 +43,17 @@ Vector<Value_Type, N>::Vector(ValueList... values)
     : scalars{values...}
 {
     static_assert((std::is_same<Value_Type, ValueList>::value && ...) == true);
-    // static_assert(sizeof...(values) == N);
-    // for (auto const& val: scalars)
-    // {
-    //     std::cout << val << std::endl;
-    // }
 }
 
 template <typename Value_Type, unsigned int N>
 template <typename Scalar>
 auto Vector<Value_Type, N>::operator*(Scalar const& scalar) 
-    -> Vector<decltype(std::declval<Value_Type>() * std::declval<Scalar>()), N>
+    -> Vector<Return_Type_Multiplication<Value_Type, Scalar>, N>
 {
-    using Return_Type = decltype(std::declval<Value_Type>() * std::declval<Scalar>());
-    Vector<Return_Type, N> res{};
+    Vector<Return_Type_Multiplication<Value_Type, Scalar>, N> res{};
     for (size_t i{}; i < size(); ++i)
     {
         res.scalar(i) = scalars[i] * scalar;
-        // std::cout << res.scalars[i] << " " << scalars[i] * scalar << std::endl;
     }
     return res;
 }
@@ -75,3 +71,15 @@ auto Vector<Value_Type, N>::operator*(Scalar const& scalar)
 //     }
 //     return res;
 // }
+
+template <typename Value_Type, unsigned int N>
+Value_Type& Vector<Value_Type, N>::operator[](size_t idx)
+{
+    return const_cast<Value_Type&>(static_cast<Vector<Value_Type, N> const*>(this)->operator[](idx));
+}
+
+template <typename Value_Type, unsigned int N>
+const Value_Type& Vector<Value_Type, N>::operator[](size_t idx) const
+{
+    return scalars[idx];
+}

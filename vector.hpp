@@ -10,6 +10,12 @@
 //     a * b;
 // };
 
+template <typename Value_Type, typename Other_Type>
+using Return_Type_Addition = decltype(std::declval<Value_Type>() + std::declval<Other_Type>());
+
+template <typename Value_Type, typename Scalar>
+using Return_Type_Multiplication = decltype(std::declval<Value_Type>() * std::declval<Scalar>());
+
 template <typename Value_Type, unsigned int N>
 class Vector
 {
@@ -19,7 +25,7 @@ public:
     Vector(ValueList... values);
 
     template <typename Other_Type>
-    auto operator+(Vector<Other_Type, N> const &rhs) -> Vector<decltype(std::declval<Value_Type>() + std::declval<Other_Type>()), N>;
+    auto operator+(Vector<Other_Type, N> const &rhs) -> Vector<Return_Type_Addition<Value_Type, Other_Type>, N>;
 
     Value_Type scalar(size_t const& index) const;
 
@@ -27,7 +33,10 @@ public:
     // auto operator*(Scalar const& scalar) requires(Multiplicable<Value_Type, Scalar>);
 
     template <typename Scalar>
-    auto operator*(Scalar const& scalar) -> Vector<decltype(std::declval<Value_Type>() * std::declval<Scalar>()), N>;
+    auto operator*(Scalar const& scalar) -> Vector<Return_Type_Multiplication<Value_Type, Scalar>, N>;
+
+    Value_Type& operator[](size_t idx);
+    const Value_Type& operator[](size_t idx) const;
 
     unsigned int size() const;
 private:

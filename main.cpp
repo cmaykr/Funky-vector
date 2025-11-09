@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-
+using namespace std;
 
 struct Bar
 {
@@ -35,9 +35,12 @@ int main()
     Vector<int, 4> vec{1, 2, 3, 4};
     Vector<double, 4> vec2{2.0, 3.0, 4.0, 5.0};
 
-    auto result = vec + vec;
+    auto result = vec + vec2;
 
-    std::cout << "Result type is: " << result.scalar(2) << std::endl;
+    for (size_t i{}; i < result.size(); ++i)
+    {
+        cout << result[i] << endl;
+    }
 
     return 0;
 }
